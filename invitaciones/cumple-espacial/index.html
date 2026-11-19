@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Misión: Tomás cumple 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--deep:#0E1240;--deep2:#070A26;--violet:#5B3FD1;--orange:#FF8A3D;--yellow:#FFD34E;--mint:#4FE0C1;--pink:#FF6FA8}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--deep2);color:#fff;font-family:Fredoka,sans-serif;overflow-x:hidden}
+body.locked{overflow:hidden;height:100vh}
+canvas#stars{position:fixed;inset:0;z-index:31;pointer-events:none}
+main,#gate{position:relative;z-index:1}
+
+#gate{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:70px;
+  background:radial-gradient(120% 70% at 50% 100%,#2B2A8C 0%,#0E1240 50%,#070A26 85%);transition:opacity .8s ease 1.4s}
+#gate.gone{opacity:0;pointer-events:none}
+#gate .title{position:absolute;top:22%;left:0;right:0;text-align:center}
+#gate .title small{font:500 12px Fredoka;letter-spacing:.3em;color:var(--mint)}
+#gate .title b{display:block;font:700 34px/1.1 Fredoka;margin-top:8px}
+.rocket{position:relative;width:90px;height:190px;transition:transform 2.2s cubic-bezier(.6,0,.9,.6) 1.2s}
+#gate.launch .rocket{transform:translateY(-130vh)}
+#gate.launch .rocket{animation:rumble .08s linear 12 }
+@keyframes rumble{50%{margin-left:3px}}
+.rocket .body{position:absolute;left:15px;top:0;width:60px;height:150px;border-radius:50% 50% 14px 14px/60% 60% 14px 14px;background:linear-gradient(90deg,#DADDF0,#fff 45%,#C9CCE6)}
+.rocket .win{position:absolute;left:30px;top:40px;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#9FF3E3,#2C7FD6);border:4px solid var(--violet)}
+.rocket .stripe{position:absolute;left:15px;top:96px;width:60px;height:12px;background:var(--orange)}
+.rocket .fin{position:absolute;bottom:30px;width:28px;height:50px;background:var(--pink)}
+.rocket .fin.l{left:0;border-radius:80% 0 0 10%}.rocket .fin.r{right:0;border-radius:0 80% 10% 0}
+.rocket .num{position:absolute;left:15px;top:112px;width:60px;text-align:center;font:700 22px Fredoka;color:var(--violet)}
+.flame{position:absolute;left:30px;bottom:-6px;width:30px;height:40px;border-radius:50% 50% 50% 50%/30% 30% 70% 70%;
+  background:radial-gradient(circle at 50% 30%,#FFF6B0,var(--yellow) 35%,var(--orange) 70%,transparent 72%);transform-origin:50% 0;opacity:0}
+#gate.ign .flame{opacity:1;animation:fl .12s ease-in-out infinite alternate}
+#gate.launch .flame{height:110px;bottom:-90px}
+@keyframes fl{to{transform:scaleY(1.25) scaleX(.9)}}
+.pad{width:200px;height:16px;border-radius:8px;background:#3B3F78;margin-top:4px;box-shadow:0 0 0 4px #2A2D63}
+.smoke{position:absolute;bottom:60px;width:60px;height:60px;border-radius:50%;background:rgba(230,230,255,.85);opacity:0;filter:blur(2px)}
+#gate.ign .smoke{animation:smk 1.6s ease-out forwards}
+@keyframes smk{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:translate(var(--sx),-10px) scale(2.4)}}
+#cnt{position:absolute;top:36%;left:0;right:0;text-align:center;font:700 120px Fredoka;color:var(--yellow);text-shadow:0 0 30px rgba(255,211,78,.6);opacity:0}
+#cnt.on{animation:cz .8s ease-out}
+@keyframes cz{0%{opacity:0;transform:scale(2)}30%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.7)}}
+#seal{margin-top:26px;border:none;cursor:pointer;background:linear-gradient(90deg,var(--orange),var(--pink));color:#fff;font:700 17px Fredoka;letter-spacing:.08em;
+  padding:14px 30px;border-radius:999px;box-shadow:0 8px 0 #B7356B,0 0 30px rgba(255,111,168,.5);animation:bounce 1.4s infinite}
+@keyframes bounce{50%{transform:translateY(-6px)}}
+#gate.ign #seal{opacity:0;transition:opacity .3s}
+
+section{padding:66px 24px;text-align:center;position:relative}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.planet{position:absolute;border-radius:50%}
+.p1{width:90px;height:90px;right:-20px;top:12%;background:radial-gradient(circle at 30% 30%,#FFB38A,#E8574F);box-shadow:inset -12px -10px 0 rgba(0,0,0,.18)}
+.p1:after{content:"";position:absolute;left:-22px;top:38px;width:134px;height:16px;border-radius:50%;border:3px solid #FFD34E;transform:rotate(-14deg)}
+.p2{width:50px;height:50px;left:16px;bottom:16%;background:radial-gradient(circle at 30% 30%,#8FF6DF,#2DA88E);animation:orbit 6s ease-in-out infinite}
+@keyframes orbit{50%{transform:translateY(-14px)}}
+.hero small{font:500 13px Fredoka;letter-spacing:.3em;color:var(--mint)}
+.hero h1{font:700 40px/1.05 Fredoka;margin-top:10px}
+.big5{font:700 150px/1 Fredoka;background:linear-gradient(var(--yellow),var(--orange));-webkit-background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 0 #7A2D8F);animation:float 3s ease-in-out infinite;margin:6px 0}
+@keyframes float{50%{transform:translateY(-10px) rotate(-4deg)}}
+.hero .when{font:500 15px Fredoka;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);padding:10px 18px;border-radius:999px}
+.astro{position:absolute;left:24px;top:20%;font-size:34px;animation:drift 7s ease-in-out infinite}
+@keyframes drift{50%{transform:translate(14px,20px) rotate(25deg)}}
+.reveal{opacity:0;transform:translateY(24px) scale(.96);transition:all .8s cubic-bezier(.3,1.4,.6,1)}
+.reveal.in{opacity:1;transform:none}
+
+#count{background:linear-gradient(135deg,var(--violet),#3524A8)}
+#count h2{font:600 26px Fredoka}
+.cd{display:flex;justify-content:center;gap:10px;margin-top:20px}
+.cd div{width:68px;padding:12px 0;border-radius:18px;background:rgba(255,255,255,.14);box-shadow:0 5px 0 rgba(0,0,0,.18)}
+.cd b{display:block;font:700 30px Fredoka;color:var(--yellow)}
+.cd span{font:500 10px Fredoka;letter-spacing:.15em;color:#D9D2FF}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:320px;margin:22px auto 0}
+.acts div{border-radius:20px;padding:16px 8px;font:500 14px Fredoka;color:#1C1A4A}
+.acts i{font-style:normal;font-size:30px;display:block;margin-bottom:4px}
+
+#details{background:#fff;color:#1C1A4A}
+.card{border-radius:24px;padding:24px 18px;margin-top:16px;background:#F3F0FF;border:3px dashed #B9AEF5}
+.card h3{font:600 22px Fredoka;color:var(--violet)}
+.card p{font:400 15px/1.5 Fredoka;color:#4A4675;margin-top:6px}
+.cta{display:inline-block;margin-top:16px;padding:13px 24px;border-radius:999px;background:var(--violet);color:#fff;text-decoration:none;font:600 14px Fredoka;letter-spacing:.06em;box-shadow:0 5px 0 #3524A8}
+.cta.go{background:linear-gradient(90deg,var(--orange),var(--pink));box-shadow:0 5px 0 #B7356B}
+#gift{background:var(--deep)}
+#gift p{font:400 15px/1.6 Fredoka;color:#CFCBF5;margin-top:10px}
+#rsvp{padding-bottom:90px}
+footer{padding:20px;text-align:center;font:400 11px Jost;letter-spacing:.2em;color:#8E8AC9}
+.fx{position:fixed;pointer-events:none;z-index:60;font-size:18px;animation:pop 1s ease-out forwards}
+@keyframes pop{0%{transform:translate(0,0) scale(.4);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.2) rotate(var(--r));opacity:0}}
+</style>
+</head>
+<body class="locked">
+<canvas id="stars"></canvas>
+
+<div id="gate">
+  <div class="title"><small>MISIÓN ESPECIAL</small><b>Tomás cumple<br>5 años 🚀</b></div>
+  <div id="cnt"></div>
+  <div class="rocket"><div class="flame"></div><div class="body"></div><div class="win"></div><div class="stripe"></div><div class="num">5</div><div class="fin l"></div><div class="fin r"></div></div>
+  <div class="smoke" style="--sx:-80px;left:30%"></div><div class="smoke" style="--sx:80px;right:30%"></div>
+  <div class="pad"></div>
+  <button id="seal">¡DESPEGAR!</button>
+</div>
+
+<main>
+<section class="hero" id="welcome">
+  <div class="planet p1"></div><div class="planet p2"></div><div class="astro">👨‍🚀</div>
+  <small>¡ATENCIÓN, TRIPULANTES!</small>
+  <h1>Tomás cumple</h1>
+  <div class="big5">5</div>
+  <div class="when">Sábado 5 de diciembre · 3:00 p.m.</div>
+</section>
+
+<section>
+  <h2 class="reveal" style="font:600 26px Fredoka">En la misión habrá…</h2>
+  <div class="acts">
+    <div class="reveal" style="background:#FFD34E"><i>🎈</i>Inflable galáctico</div>
+    <div class="reveal" style="background:#4FE0C1"><i>🎨</i>Pintacaritas</div>
+    <div class="reveal" style="background:#FF9FC6"><i>🪅</i>Piñata espacial</div>
+    <div class="reveal" style="background:#B9AEF5"><i>🍰</i>Torta y sorpresas</div>
+  </div>
+</section>
+
+<section id="count">
+  <h2>Cuenta regresiva para el despegue</h2>
+  <div class="cd"><div><b id="d">0</b><span>DÍAS</span></div><div><b id="h">0</b><span>HORAS</span></div><div><b id="m">0</b><span>MIN</span></div><div><b id="s">0</b><span>SEG</span></div></div>
+</section>
+
+<section id="details">
+  <h2 class="reveal" style="font:600 26px Fredoka;color:#1C1A4A">Base de lanzamiento</h2>
+  <div class="card reveal">
+    <h3>Salón Galaxia</h3>
+    <p>Calle 98 #49-20, Barranquilla<br>Sábado 5 de diciembre · 3:00 p.m.</p>
+    <a class="cta" href="https://maps.google.com/?q=Barranquilla" target="_blank">📍 VER EN MAPS</a>
+  </div>
+  <div class="card reveal" style="background:#FFF6E0;border-color:#FFD34E">
+    <h3 style="color:#E07A1F">Traje de astronauta</h3>
+    <p>Ven disfrazado del espacio:<br>astronauta, alien o estrella ⭐</p>
+  </div>
+</section>
+
+<section id="gift">
+  <div style="font-size:44px" class="reveal">🎁</div>
+  <h2 class="reveal" style="font:600 24px Fredoka">¿Y el regalo?</h2>
+  <p class="reveal">Tu compañía es el mejor regalo.<br>Si quieres traer algo, a Tomás le encantan<br>los legos y los dinosaurios 🦖</p>
+</section>
+
+<section id="rsvp">
+  <h2 class="reveal" style="font:600 26px Fredoka">¿Te subes al cohete?</h2>
+  <p class="reveal" style="font:400 15px Fredoka;color:#CFCBF5;margin-top:8px">Confirma antes del 28 de noviembre</p>
+  <a class="cta go" href="https://wa.me/573000000000?text=Confirmo%20cumple%20Tomas" target="_blank">🚀 CONFIRMAR POR WHATSAPP</a>
+</section>
+<footer>HECHO CON AMOR POR MOMELINV</footer>
+</main>
+
+<script>
+const c=document.getElementById('stars'),x=c.getContext('2d');let W,H,S=[],speed=.0002;
+function rs(){W=c.width=innerWidth*devicePixelRatio;H=c.height=innerHeight*devicePixelRatio}rs();addEventListener('resize',rs);
+for(let i=0;i<90;i++)S.push({x:Math.random(),y:Math.random(),r:.4+Math.random()*1.6,t:Math.random()*6});
+(function loop(t){x.clearRect(0,0,W,H);for(const s of S){s.y+=speed*(s.r);if(s.y>1)s.y=0;const a=.4+.6*Math.abs(Math.sin(t/700+s.t));
+  x.fillStyle='rgba(255,255,255,'+a+')';x.fillRect(s.x*W,s.y*H,s.r*devicePixelRatio,s.r*devicePixelRatio*(speed>.001?6:1));}requestAnimationFrame(loop)})(0);
+
+const gate=document.getElementById('gate'),cnt=document.getElementById('cnt');
+document.getElementById('seal').addEventListener('click',e=>{
+  e.stopPropagation();const btn=e.currentTarget;btn.disabled=true;
+  [3,2,1].forEach((n,i)=>setTimeout(()=>{cnt.textContent=n;cnt.classList.remove('on');void cnt.offsetWidth;cnt.classList.add('on');window.__ev&&__ev('tick')},i*600));
+  setTimeout(()=>{gate.classList.add('ign');},1500);
+  setTimeout(()=>{gate.classList.add('launch');speed=.004;},1600);
+  setTimeout(()=>{gate.classList.add('gone');},2000);
+  setTimeout(()=>{speed=.0002;document.body.classList.remove('locked');observe()},4600);
+});
+const ICONS=['⭐','✨','🪐','💫','🌟','☄️'];
+function burst(X,Y,n=9){for(let i=0;i<n;i++){const s=document.createElement('span');s.className='fx';s.textContent=ICONS[i%ICONS.length];
+  const a=Math.random()*Math.PI*2,r=50+Math.random()*80;s.style.left=X+'px';s.style.top=Y+'px';
+  s.style.setProperty('--dx',Math.cos(a)*r+'px');s.style.setProperty('--dy',Math.sin(a)*r-30+'px');s.style.setProperty('--r',(Math.random()*160-80)+'deg');
+  document.body.appendChild(s);setTimeout(()=>s.remove(),1100)}}
+document.addEventListener('pointerdown',e=>{if(!gate.classList.contains('gone'))return;burst(e.clientX,e.clientY)});
+function observe(){const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting)en.target.classList.add('in')}),{threshold:.2});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));}
+const target=new Date('2026-12-05T15:00:00-05:00');
+const d_=document.getElementById('d'),h_=document.getElementById('h'),m_=document.getElementById('m'),s_=document.getElementById('s');
+function tick(){let t=Math.max(0,target-new Date());const d=Math.floor(t/864e5),h=Math.floor(t/36e5)%24,m=Math.floor(t/6e4)%60,s=Math.floor(t/1e3)%60;
+  d_.textContent=d;h_.textContent=String(h).padStart(2,'0');m_.textContent=String(m).padStart(2,'0');s_.textContent=String(s).padStart(2,'0');}
+tick();setInterval(tick,1000);
+</script>
+</body>
+</html>
