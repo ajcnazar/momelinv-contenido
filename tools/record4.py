@@ -8,8 +8,8 @@ import record2 as R2
 from record2 import ev, tap, ripple, center, cap
 
 REPO = os.environ.get("REPO", "/home/claude/momelinv-contenido")
-CAP_BG = {"boda": "rgba(30,58,90,.86)", "novena": "rgba(11,42,32,.86)", "cumple": "rgba(70,40,170,.88)"}
-CAP_EM = {"boda": "#F3C8A8", "novena": "#E3BC6A", "cumple": "#FFD34E"}
+CAP_BG = {"baby": "rgba(150,90,120,.88)", "boda": "rgba(30,58,90,.86)", "novena": "rgba(11,42,32,.86)", "cumple": "rgba(70,40,170,.88)"}
+CAP_EM = {"baby": "#FFD6E0", "boda": "#F3C8A8", "novena": "#E3BC6A", "cumple": "#FFD34E"}
 
 
 def reel_boda(page, r):
@@ -79,7 +79,27 @@ def reel_cumple(page, r):
     r.wait(2.7)
 
 
-REELS = {"boda": ("boda-playa", reel_boda), "novena": ("novena", reel_novena), "cumple": ("cumple-espacial", reel_cumple)}
+def reel_baby(page, r):
+    r.mark("start")
+    cap(page, "¿<em>Niño o niña</em>? 🎀<br>Revélalo en la invitación")
+    r.wait(2.2)
+    x, y = center(page, "#seal"); tap(page, x, y, "seal")
+    cap(page, None); r.wait(2.6)
+    for (x, y) in [(110, 360), (250, 320), (180, 500)]:
+        tap(page, x, y); r.wait(0.35)
+    r.wait(0.3)
+    steps = [("#count", -120, "Cuenta regresiva para<br><em>conocer a la bebé</em>"),
+             ("#details", -110, "Ubicación y<br><em>dress code pastel</em>"),
+             ("#gift", -120, "Lista de regalos o<br><em>lluvia de sobres</em> 🍼"),
+             ("#rsvp", -170, "Y confirman<br><em>por WhatsApp</em> 📲")]
+    for sel, off, txt in steps:
+        cap(page, txt); R.scroll_to(page, sel, 1300, off); r.wait(1.0)
+    x, y = center(page, "#rsvp .cta"); ripple(page, x, y); r.wait(0.6)
+    cap(page, "Baby shower y revelación<br>Comenta <em>INFO</em> 🎀")
+    r.wait(2.7)
+
+
+REELS = {"baby": ("baby-shower", reel_baby), "boda": ("boda-playa", reel_boda), "novena": ("novena", reel_novena), "cumple": ("cumple-espacial", reel_cumple)}
 
 
 def main(name):

@@ -11,6 +11,7 @@ Los archivos de `reels/` y `carruseles/` se publican en Instagram desde su enlac
   - `boda-playa/` — boda frente al mar, portada de pase de abordar que se rasga.
   - `novena/` — novena navideña, caja de regalo que se abre, luces y destellos.
   - `cumple-espacial/` — cumpleaños infantil, cohete con cuenta 3-2-1 que despega.
+  - `baby-shower/` — baby shower con revelación: globo que explota en confeti.
 - `tools/` — scripts de grabación:
   - `record4.py <boda|novena|cumple>`: graba las invitaciones de `invitaciones/` (DPR=2 OUT_W=720 OUT_H=1280).
   - `navidad_music.py <salida.wav> [seg]`: música navideña original sintetizada.
