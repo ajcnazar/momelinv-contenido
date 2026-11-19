@@ -7,6 +7,7 @@ Los archivos de `reels/` y `carruseles/` se publican en Instagram desde su enlac
 - `reels/AAAA-MM-DD-tema.mp4` — reels 1080×1920 con audio.
 - `carruseles/AAAA-MM-DD-tema/NN.jpg` — carruseles 1080×1350.
 - `audio/` — música propia libre de derechos (vals.mp3, pop.mp3), generada con vidIQ.
+- `invitaciones/CATALOGO.md` — tabla de cada invitación (concepto, apertura, navegación, cuenta regresiva, confirmación, tipografía, reel). **Leerlo antes de crear una nueva: cada invitación debe ser distinta en todas las columnas.**
 - `invitaciones/` — invitaciones demo propias (HTML/CSS/JS, solo datos de ejemplo), para grabar reels:
   - `boda-playa/` — boda frente al mar, portada de pase de abordar que se rasga.
   - `novena/` — novena navideña, caja de regalo que se abre, luces y destellos.
