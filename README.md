@@ -6,7 +6,7 @@ Los archivos de `reels/` y `carruseles/` se publican en Instagram desde su enlac
 ## Estructura
 - `reels/AAAA-MM-DD-tema.mp4` — reels 1080×1920 con audio.
 - `carruseles/AAAA-MM-DD-tema/NN.jpg` — carruseles 1080×1350.
-- `audio/` — música propia libre de derechos (vals.mp3, pop.mp3), generada con vidIQ.
+- `audio/` — música propia libre de derechos (vals.mp3, pop.mp3, generadas con vidIQ). `audio/USO.md` registra qué música y efectos lleva cada reel: **no repetir sonido**.
 - `invitaciones/CATALOGO.md` — tabla de cada invitación (concepto, apertura, navegación, cuenta regresiva, confirmación, tipografía, reel). **Leerlo antes de crear una nueva: cada invitación debe ser distinta en todas las columnas.**
 - `invitaciones/` — invitaciones demo propias (HTML/CSS/JS, solo datos de ejemplo), para grabar reels:
   - `boda-playa/` — boda frente al mar, portada de pase de abordar que se rasga.
@@ -20,7 +20,8 @@ Los archivos de `reels/` y `carruseles/` se publican en Instagram desde su enlac
     con textos en pantalla y registro de eventos (toques, sello, textos) para sincronizar efectos.
     Variables: `DPR=2 OUT_W=720 OUT_H=1280 TAG=<nombre>`; Chrome con `--force-device-scale-factor`.
   - `encode.py <tag>`: arma el MP4 (usar `OUT_W=1080 OUT_H=1920`).
-  - `mix.py <tag> <musica> <volumen> [offset]`: mezcla música + efectos sintetizados.
+  - `mix.py <tag> <musica> <volumen> [offset]`: mezcla música + efectos sintetizados. `SFX=magia|burbujas|despegue|suave` elige el juego de efectos.
+  - `musica.py` / `pista.sh <estilo> <semilla> <seg> <salida.wav>`: genera música original (tropical, lofi, dembow, infantil, synthwave, romantico, house), normalizada.
   - Los scripts asumen rutas en /home/claude/reels: copiar `tools/*` allí y la música a `/home/claude/reels/audio/` (convertir mp3 a wav).
 
 ## Reglas de contenido
