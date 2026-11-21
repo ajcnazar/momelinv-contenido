@@ -13,15 +13,19 @@ Los archivos de `reels/` y `carruseles/` se publican en Instagram desde su enlac
   - `novena/` — novena navideña, caja de regalo que se abre, luces y destellos.
   - `cumple-espacial/` — cumpleaños infantil, cohete con cuenta 3-2-1 que despega.
   - `baby-shower/` — baby shower con revelación: globo que explota en confeti.
+  - `periodico-40/` — cumpleaños de 40 como periódico: se desdobla, páginas horizontales, cupón que se recorta.
+  - `grado-pixel/` — grado en modo videojuego 8 bits: PRESS START, niveles tipo historias, "¿Jugador 2 se une?".
+- `tools/escenas/` — escenarios para reels de humor (chat de la tía, lista de invitados de mamá).
 - `tools/` — scripts de grabación:
   - `record4.py <boda|novena|cumple>`: graba las invitaciones de `invitaciones/` (DPR=2 OUT_W=720 OUT_H=1280).
+  - `record5.py <tia|mama|periodico|grado>`: graba las invitaciones nuevas y las escenas de humor (grado se acelera x2).
   - `navidad_music.py <salida.wav> [seg]`: música navideña original sintetizada.
   - `record.py` / `record2.py`: graban una invitación web en vertical con Playwright (Chrome headless),
     con textos en pantalla y registro de eventos (toques, sello, textos) para sincronizar efectos.
     Variables: `DPR=2 OUT_W=720 OUT_H=1280 TAG=<nombre>`; Chrome con `--force-device-scale-factor`.
   - `encode.py <tag>`: arma el MP4 (usar `OUT_W=1080 OUT_H=1920`).
-  - `mix.py <tag> <musica> <volumen> [offset]`: mezcla música + efectos sintetizados. `SFX=magia|burbujas|despegue|suave` elige el juego de efectos.
-  - `musica.py` / `pista.sh <estilo> <semilla> <seg> <salida.wav>`: genera música original (tropical, lofi, dembow, infantil, synthwave, romantico, house), normalizada.
+  - `mix.py <tag> <musica> <volumen> [offset]`: mezcla música + efectos sintetizados. `SFX=magia|burbujas|despegue|suave|retro|papel` elige el juego de efectos.
+  - `musica.py` / `pista.sh <estilo> <semilla> <seg> <salida.wav>`: genera música original (tropical, lofi, dembow, infantil, synthwave, romantico, house, chiptune), normalizada.
   - Los scripts asumen rutas en /home/claude/reels: copiar `tools/*` allí y la música a `/home/claude/reels/audio/` (convertir mp3 a wav).
 
 ## Reglas de contenido

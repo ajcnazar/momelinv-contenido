@@ -86,12 +86,51 @@ def swish():
     return s / np.abs(s).max() * np.sin(np.pi * t) ** 3 * .1
 
 
+def _sq(f, dur, duty=.5, amp=.3):
+    n = int(dur * SR); t = np.arange(n) / SR
+    ph = (np.cumsum(np.broadcast_to(f, n)) / SR) % 1.0
+    return np.where(ph < duty, 1.0, -1.0) * amp * env(n, .001, dur * .7)
+
+
+def blip():
+    return np.concatenate([_sq(880, .05, .25, .25), _sq(1320, .07, .25, .25)])
+
+
+def coin():
+    return np.concatenate([_sq(988, .07, .5, .22), _sq(1319, .28, .5, .22)])
+
+
+def powerup():
+    return np.concatenate([_sq(f, .06, .125, .22) for f in [523, 659, 784, 1047, 659, 784, 1047, 1319, 784, 1047, 1319, 1568]])
+
+
+def noise8():
+    n = int(.12 * SR); s = np.repeat(rng.choice([-1.0, 1.0], n // 40 + 1), 40)[:n]
+    return s * env(n, .001, .04) * .12
+
+
+def pen():
+    """Rasgueo de lápiz sobre papel."""
+    n = int(.45 * SR); s = rng.standard_normal(n); s = np.diff(np.concatenate([[0], s]))
+    t = np.arange(n) / SR
+    am = .55 + .45 * np.sin(2 * np.pi * 9 * t) ** 2
+    return s * am * env(n, .02, .3) * .06
+
+
+def stamp():
+    k = int(.18 * SR); t = np.arange(k) / SR
+    thud = np.sin(2 * np.pi * np.cumsum(140 * np.exp(-t * 18) + 60) / SR) * env(k, .001, .06)
+    return thud * .7 + rng.standard_normal(k) * env(k, .0005, .01) * .25
+
+
 # Juegos de efectos: cambia SFX=<juego> en cada reel para no sonar siempre igual.
 SETS = {
     "magia":    {"tap": sparkle, "seal": seal, "tick": tick, "cap": whoosh},
     "burbujas": {"tap": bubble, "seal": pluck_up, "tick": wood, "cap": swish},
     "despegue": {"tap": wood, "seal": riser, "tick": tick, "cap": swish},
     "suave":    {"tap": wood, "seal": pluck_up, "tick": wood, "cap": swish},
+    "retro":    {"tap": blip, "seal": powerup, "tick": coin, "cap": noise8},
+    "papel":    {"tap": wood, "seal": stamp, "tick": pen, "cap": swish},
 }
 SFX = SETS[os.environ.get("SFX", "magia")]
 

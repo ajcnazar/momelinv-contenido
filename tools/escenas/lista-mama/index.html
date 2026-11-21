@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escena: la lista de invitados de mamá</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Jost:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#D9CBB8}
+.nb{position:absolute;left:14px;right:14px;top:126px;bottom:18px;background:#FFFDF7;border-radius:6px;box-shadow:0 10px 30px rgba(60,40,20,.25);
+  background-image:linear-gradient(90deg,transparent 46px,#E9A3A3 46px,#E9A3A3 48px,transparent 48px),repeating-linear-gradient(#FFFDF7 0 31px,#B9D3E8 31px 32px);background-position:0 0,0 70px;overflow:hidden}
+.rings{position:absolute;top:0;left:0;right:0;height:22px;display:flex;justify-content:space-around;padding:0 20px;transform:translateY(-10px)}
+.rings i{width:12px;height:26px;border-radius:6px;background:#9A8F86;box-shadow:inset 0 0 0 3px #CFC6BC}
+h1{position:absolute;left:58px;top:24px;font:700 34px Caveat;color:#2A3F7A}
+#n{position:absolute;right:14px;top:16px;width:84px;height:84px;border-radius:50%;border:4px solid #D64545;color:#D64545;font:700 44px/76px Caveat;text-align:center;transform:rotate(-8deg);transition:transform .25s cubic-bezier(.3,1.8,.5,1)}
+#n.bump{transform:rotate(-8deg) scale(1.35)}
+#n small{position:absolute;bottom:-20px;left:0;right:0;font:600 13px Caveat;line-height:1;color:#D64545}
+#list{position:absolute;left:58px;right:12px;top:102px;font:500 23px/32px Caveat;color:#2A3F7A}
+#list div{height:32px;white-space:nowrap;clip-path:inset(0 100% 0 0);animation:write .7s steps(18) forwards}
+#list div.add{color:#B03A3A}
+#list div b{font-weight:700}
+@keyframes write{to{clip-path:inset(0 0 0 0)}}
+.note{position:absolute;right:18px;bottom:40px;width:170px;padding:14px 12px;background:#FFE58A;transform:rotate(5deg) scale(0);font:700 22px/1.15 Caveat;color:#7A4A00;box-shadow:0 6px 14px rgba(0,0,0,.2);transition:transform .35s cubic-bezier(.3,1.6,.5,1);text-align:center}
+.note.on{transform:rotate(5deg) scale(1)}
+/* panel de confirmaciones */
+#dash{position:absolute;left:28px;right:28px;top:150px;background:#F8F2EC;border-radius:24px;padding:20px 18px;box-shadow:0 20px 50px rgba(40,25,15,.4);transform:translateY(700px);transition:transform .7s cubic-bezier(.2,.9,.2,1);font-family:Jost;color:#5B463F;border:2px solid #C9A36B}
+#dash.on{transform:none}
+#dash .k{font:600 11px Jost;letter-spacing:.25em;color:#C9A36B}
+#dash h2{font:600 30px/1.1 'Cormorant Garamond';margin:6px 0 14px}
+#dash h2 em{color:#C9A36B}
+.row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:9px;font:500 15px Jost}
+.row b{font:600 26px Jost}
+.row.ok b{color:#3C8C5A}.row.no b{color:#B0473E}.row.wait b{color:#C9A36B}
+.who{font:400 13px/1.6 Jost;margin-top:8px;color:#7d6a62}
+.who span{display:inline-block;background:#EFE4D8;border-radius:10px;padding:1px 8px;margin:2px 2px 0 0}
+</style>
+</head>
+<body>
+<div class="nb">
+  <div class="rings"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <h1>Invitados fiesta</h1>
+  <div id="n">30<small>personas</small></div>
+  <div id="list"></div>
+  <div class="note" id="note"></div>
+</div>
+<div id="dash">
+  <div class="k">CONFIRMACIONES EN VIVO</div>
+  <h2>Así sabes <em>quién va</em> de verdad</h2>
+  <div class="row ok"><span>✅ Confirmados</span><b id="c1">0</b></div>
+  <div class="row no"><span>❌ No asisten</span><b id="c2">0</b></div>
+  <div class="row wait"><span>⏳ Sin responder</span><b id="c3">0</b></div>
+  <div class="who">Cupos por invitación: <span>Familia Ríos · 2</span><span>Comadre Nelly · 1</span><span>Primo Jairo · 1</span></div>
+</div>
+<script>
+const n = document.getElementById('n'), list = document.getElementById('list');
+window.line = (html, total, add) => {
+  const d = document.createElement('div'); d.innerHTML = html; if (add) d.className = 'add'; list.appendChild(d);
+  if (total != null) { n.firstChild.textContent = total; n.classList.add('bump'); setTimeout(() => n.classList.remove('bump'), 260); }
+};
+window.note = html => { const e = document.getElementById('note'); e.innerHTML = html; e.classList.add('on'); };
+window.dash = () => {
+  document.getElementById('dash').classList.add('on');
+  const T = [[ 'c1', 38 ], [ 'c2', 9 ], [ 'c3', 3 ]];
+  T.forEach(([id, v]) => { let k = 0; const iv = setInterval(() => { k++; document.getElementById(id).textContent = Math.round(v * k / 18); if (k >= 18) clearInterval(iv); }, 55); });
+};
+</script>
+</body>
+</html>

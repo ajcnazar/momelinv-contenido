@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laura · Nivel completado</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1A1C2C;--bg2:#29366F;--y:#FFCD75;--g:#38B764;--g2:#A7F070;--r:#EF7D57;--c:#73EFF7;--w:#F4F4F4;--p:#B13E53}
+*{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--w);font-family:VT323,monospace;user-select:none}
+.px{font-family:'Press Start 2P',monospace}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px)}
+.scr{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;padding:128px 22px 30px;text-align:center}
+.scr.on{display:flex;animation:pop .25s steps(4)}
+@keyframes pop{from{transform:scale(.92);filter:brightness(2)}}
+/* barras tipo historias */
+#bars{position:fixed;top:12px;left:12px;right:12px;display:none;gap:5px;z-index:40}
+#bars.on{display:flex}
+#bars i{flex:1;height:6px;background:rgba(244,244,244,.25);border:1px solid rgba(0,0,0,.4)}
+#bars i.done{background:var(--y)}
+#hud{position:fixed;top:28px;left:12px;right:12px;display:none;justify-content:space-between;font:10px 'Press Start 2P';color:var(--y);z-index:40}
+#hud.on{display:flex}
+/* portada */
+#s0{justify-content:center;padding-top:60px;background:radial-gradient(circle at 50% 40%,#333c57,var(--bg) 70%)}
+.logo{font:20px/1.5 'Press Start 2P';color:var(--y);text-shadow:4px 4px 0 var(--p)}
+.logo small{display:block;font-size:10px;color:var(--c);text-shadow:none;margin-bottom:12px;letter-spacing:.1em}
+.hero{width:96px;height:120px;margin:34px auto 24px;position:relative}
+.hero div{position:absolute;width:6px;height:6px}
+#start{font:14px 'Press Start 2P';color:var(--w);animation:bl 1s steps(1) infinite;margin-top:10px;padding:14px 10px;cursor:pointer}
+@keyframes bl{50%{opacity:0}}
+.copy{position:absolute;bottom:26px;font:16px VT323;color:#94B0C2}
+#load{position:fixed;inset:0;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:45;font:12px 'Press Start 2P'}
+#load.on{display:flex}
+#load .bar{width:220px;height:18px;border:3px solid var(--w);margin-top:16px;padding:2px}
+#load .bar b{display:block;height:100%;width:0;background:var(--g2)}
+#load.on .bar b{animation:fill 1s steps(10) forwards}
+@keyframes fill{to{width:100%}}
+/* nivel completado */
+.tag{font:11px 'Press Start 2P';color:var(--c);margin-bottom:12px}
+.h{font:20px/1.45 'Press Start 2P';color:var(--y);text-shadow:3px 3px 0 var(--p)}
+.stars{font-size:34px;margin:16px 0 6px;letter-spacing:8px;color:var(--y)}
+.stars span{display:inline-block;transform:scale(0)}
+.on .stars span{animation:st .3s steps(3) forwards}
+.on .stars span:nth-child(2){animation-delay:.35s}.on .stars span:nth-child(3){animation-delay:.7s}
+@keyframes st{to{transform:scale(1)}}
+.who{font:26px/1.1 VT323;margin:10px 0 14px}
+.who b{color:var(--g2);font-weight:400}
+.score{width:100%;border:3px solid var(--w);padding:10px 12px;font:22px/1.35 VT323;text-align:left;background:rgba(0,0,0,.25)}
+.score div{display:flex;justify-content:space-between}
+.score span:last-child{color:var(--y)}
+.tap{position:absolute;bottom:26px;font:10px 'Press Start 2P';color:#94B0C2;animation:bl 1.2s steps(1) infinite}
+/* desbloquear fiesta */
+.lock{font-size:46px;margin:16px 0 8px}
+.xp{width:100%;margin-top:14px;text-align:left;font:12px 'Press Start 2P'}
+.xp .bar{height:26px;border:3px solid var(--w);margin-top:8px;padding:3px;background:#000}
+.xp .bar b{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--g) 0 10px,var(--g2) 10px 12px);transition:width 1.6s steps(16)}
+.clock{font:44px/1 VT323;color:var(--c);margin-top:18px;letter-spacing:2px}
+.clock small{display:block;font:11px 'Press Start 2P';color:#94B0C2;margin-top:8px;letter-spacing:0}
+.info{margin-top:14px;font:22px/1.3 VT323}
+/* mapa */
+.map{display:grid;grid-template-columns:repeat(9,32px);grid-template-rows:repeat(7,32px);border:3px solid var(--w);margin-top:12px;position:relative}
+.map i{display:block;width:32px;height:32px}
+.t-g{background:var(--g)}.t-g2{background:#2F9A52}
+.t-r{background:#566C86}.t-w{background:#3B5DC9}.t-h{background:var(--r)}.t-s{background:#94B0C2}
+#walker{position:absolute;width:24px;height:24px;left:4px;top:4px;font-size:20px;line-height:24px;text-align:center;transition:left .35s steps(2),top .35s steps(2)}
+.flag{position:absolute;font-size:22px;animation:bl 1s steps(1) infinite}
+.place{margin-top:12px;font:22px/1.25 VT323}
+.place b{color:var(--y);font-weight:400}
+.btnA{display:inline-flex;align-items:center;gap:10px;margin-top:12px;font:11px 'Press Start 2P';color:var(--w);text-decoration:none}
+.btnA i{display:inline-block;width:30px;height:30px;border-radius:50%;background:var(--p);box-shadow:inset -3px -3px 0 rgba(0,0,0,.35);font:12px/30px 'Press Start 2P';font-style:normal}
+/* jugador 2 */
+.q{font:16px/1.6 'Press Start 2P';color:var(--y);margin:10px 0 18px}
+.opts{font:24px/1.7 'Press Start 2P';text-align:left;font-size:13px}
+.opts div{padding:6px 10px}
+.opts div.sel{background:var(--w);color:var(--bg)}
+.opts div.sel:before{content:"▶ "}
+.pad{display:flex;align-items:center;justify-content:space-between;width:250px;margin-top:28px;padding:16px 20px;background:#333C57;border-radius:16px;box-shadow:0 6px 0 #0f1020}
+.dpad{position:relative;width:72px;height:72px}
+.dpad b{position:absolute;background:#111;left:24px;top:0;width:24px;height:72px}
+.dpad b+b{left:0;top:24px;width:72px;height:24px}
+.ab{display:flex;gap:12px}
+.ab i{width:40px;height:40px;border-radius:50%;background:var(--p);font:12px/40px 'Press Start 2P';font-style:normal;box-shadow:inset -4px -4px 0 rgba(0,0,0,.35);cursor:pointer}
+.ab i.push{transform:translateY(3px);box-shadow:none}
+#joined{position:fixed;inset:0;z-index:44;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(26,28,44,.92);font:16px/1.7 'Press Start 2P';color:var(--g2);text-align:center}
+#joined.on{display:flex}
+#joined small{font:22px VT323;color:var(--w);margin-top:16px}
+.cf{position:fixed;width:8px;height:8px;z-index:46;pointer-events:none;animation:fall 1.6s steps(12) forwards}
+@keyframes fall{to{transform:translateY(560px) rotate(180deg)}}
+</style>
+</head>
+<body>
+<div id="bars"><i></i><i></i><i></i><i></i></div>
+<div id="hud"><span>LAURA x1</span><span id="coins">★ 000</span></div>
+
+<section class="scr on" id="s0">
+  <div class="logo"><small>MOMELINV GAMES PRESENTA</small>LAURA<br>GRADO 2026</div>
+  <div class="hero" id="hero"></div>
+  <div id="start">PRESS START</div>
+  <div class="copy">© 2026 · 1 JUGADORA · INGENIERÍA</div>
+</section>
+<div id="load">CARGANDO...<div class="bar"><b></b></div></div>
+
+<section class="scr" id="s1">
+  <div class="tag">MUNDO 5 · UNIVERSIDAD</div>
+  <div class="h">NIVEL<br>COMPLETADO</div>
+  <div class="stars"><span>★</span><span>★</span><span>★</span></div>
+  <div class="who"><b>Laura Restrepo</b><br>ya es Ingeniera Industrial</div>
+  <div class="score">
+    <div><span>AÑOS JUGADOS</span><span data-n="5">0</span></div>
+    <div><span>MATERIAS</span><span data-n="52">0</span></div>
+    <div><span>PARCIALES</span><span data-n="148">0</span></div>
+    <div><span>CAFÉS</span><span data-n="2000">0</span></div>
+  </div>
+  <div class="tap">TOCA PARA SEGUIR ▶</div>
+</section>
+
+<section class="scr" id="s2">
+  <div class="tag">SIGUIENTE NIVEL</div>
+  <div class="h">LA FIESTA</div>
+  <div class="lock" id="lock">🔒</div>
+  <div class="xp">EXP. PARA DESBLOQUEAR<div class="bar"><b id="xpb"></b></div></div>
+  <div class="clock" id="clock">--:--:--:--<small>DD · HH · MM · SS</small></div>
+  <div class="info">Grado: viernes 11 de diciembre<br>Fiesta: <b style="color:var(--y);font-weight:400">sábado 12 · 8:00 p.m.</b></div>
+  <div class="tap">TOCA PARA SEGUIR ▶</div>
+</section>
+
+<section class="scr" id="s3">
+  <div class="tag">MAPA DEL MUNDO</div>
+  <div class="h" style="font-size:16px">VE A LA META</div>
+  <div class="map" id="map"><div id="walker">🧑‍🎓</div><div class="flag" style="left:228px;top:164px">🏁</div></div>
+  <div class="place"><b>Club Ejemplo · Salón Arcade</b><br>Calle 00 #00-00, Barranquilla</div>
+  <a class="btnA" id="maps" href="https://maps.google.com/?q=Barranquilla" target="_blank"><i>A</i>VER MAPA</a>
+  <div class="tap">TOCA PARA SEGUIR ▶</div>
+</section>
+
+<section class="scr" id="s4">
+  <div class="tag">MODO MULTIJUGADOR</div>
+  <div class="q">¿JUGADOR 2<br>SE UNE?</div>
+  <div class="opts"><div class="sel" id="o1">VOY CON TODO</div><div id="o2">NO PUEDO :(</div></div>
+  <div class="pad"><div class="dpad"><b></b><b></b></div><div class="ab"><i>B</i><i id="btnA">A</i></div></div>
+  <div style="margin-top:14px;font:18px VT323;color:#94B0C2">Elige y presiona A para confirmar</div>
+</section>
+<div id="joined"><span style="font:28px VT323">¡</span>JUGADOR 2<br>SE HA UNIDO!<small>Enviando confirmación por WhatsApp…</small></div>
+
+<script>
+const EVENT = new Date('2026-12-12T20:00:00-05:00');
+const $ = s => document.querySelector(s);
+// sprite de la graduada (pixel art propio, 16x20)
+const SPR = [
+ "....KKKKKKKK....","..KKKKKKKKKKKK..","....KKKKKKKKY...","....HHHHHHHHY...","...HHSSSSSSHHY..","...HSSKSSKSSH...",
+ "...HSSSSSSSSH...","...HHSSRRSSHH...","....HHSSSSHH....","....PPPPPPPP....","...PPPPWWPPPP...","..PPPPPWWPPPPP..",
+ "..PPPPPWWPPPPP..","..SPPPPPPPPPPS..","..SPPPPPPPPPPS..","...PPPPPPPPPP...","...PPPPPPPPPP...","....KK....KK....","....KK....KK....","...KKK....KKK..."];
+const COL = {K:'#1A1C2C',Y:'#FFCD75',H:'#5D275D',S:'#F4C7A1',R:'#B13E53',P:'#29366F',W:'#F4F4F4'};
+const hero = $('#hero');
+SPR.forEach((row,y)=>[...row].forEach((c,x)=>{ if(c!=='.'){ const d=document.createElement('div'); d.style.cssText=`left:${x*6}px;top:${y*6}px;background:${COL[c]}`; hero.appendChild(d);} }));
+// mapa
+const M = ["gggrgggwg","gGgrgGgwg","rrrrrrrww","gggrggrwg","gHgrgGrwg","gggrrrrrg","gGgggggsg"];
+const map = $('#map');
+M.join('').split('').forEach(c => { const i=document.createElement('i'); i.className='t-'+({g:'g',G:'g2',r:'r',w:'w',H:'h',s:'s'}[c]); map.appendChild(i); });
+const PATH = [[3,0],[3,1],[3,2],[4,2],[5,2],[6,2],[6,3],[6,4],[6,5],[7,5]];
+function walk(){ let k=0; const w=$('#walker'); w.style.left='100px'; w.style.top='4px';
+  const iv=setInterval(()=>{ if(k>=PATH.length){clearInterval(iv);return;} const [x,y]=PATH[k++]; w.style.left=(x*32+4)+'px'; w.style.top=(y*32+4)+'px'; }, 380); }
+
+let cur = 0;
+const scr = [...document.querySelectorAll('.scr')];
+const bars = [...document.querySelectorAll('#bars i')];
+function show(i){
+  scr.forEach(s=>s.classList.remove('on')); scr[i].classList.add('on'); cur=i;
+  bars.forEach((b,k)=>b.classList.toggle('done', k < i));
+  if(i===1) count();
+  if(i===2){ $('#xpb').style.width='0'; setTimeout(()=>{ const tot=30*86400e3; const left=EVENT-new Date(); $('#xpb').style.width=Math.max(8,Math.min(100,100-left/tot*100))+'%'; },200); }
+  if(i===3) walk();
+}
+window.go = show;
+let coins = 0;
+function addCoins(n){ coins+=n; $('#coins').textContent='★ '+String(coins).padStart(3,'0'); }
+function count(){ document.querySelectorAll('[data-n]').forEach(e=>{ const n=+e.dataset.n; let k=0; const iv=setInterval(()=>{ k++; e.textContent=Math.round(n*k/20).toLocaleString('es-CO'); if(k>=20) clearInterval(iv); },45); }); addCoins(100); }
+function tick(){ let s=Math.max(0,Math.floor((EVENT-new Date())/1000)); const p=n=>String(n).padStart(2,'0');
+  $('#clock').firstChild.textContent=`${p(Math.floor(s/86400))}:${p(Math.floor(s%86400/3600))}:${p(Math.floor(s%3600/60))}:${p(s%60)}`; }
+tick(); setInterval(tick,1000);
+
+$('#start').addEventListener('click', e => { e.stopPropagation(); $('#load').classList.add('on');
+  setTimeout(()=>{ $('#load').classList.remove('on'); $('#bars').classList.add('on'); $('#hud').classList.add('on'); show(1); }, 1150); });
+document.addEventListener('click', e => {
+  if (cur===0 || cur===4 || e.target.closest('a')) return;
+  if (e.clientX < innerWidth*0.3) show(Math.max(1,cur-1)); else show(Math.min(4,cur+1));
+});
+let sel = 1;
+$('#o1').onclick = () => { sel=1; $('#o1').classList.add('sel'); $('#o2').classList.remove('sel'); };
+$('#o2').onclick = () => { sel=2; $('#o2').classList.add('sel'); $('#o1').classList.remove('sel'); };
+$('#btnA').addEventListener('click', () => {
+  $('#btnA').classList.add('push'); setTimeout(()=>$('#btnA').classList.remove('push'),150);
+  $('#joined').innerHTML = sel===1 ? '<span style="font:28px VT323">¡</span>JUGADOR 2<br>SE HA UNIDO!<small>Enviando confirmación por WhatsApp…</small>' : 'GAME OVER<br>:(<small>Avisando por WhatsApp…</small>';
+  $('#joined').classList.add('on'); bars.forEach(b=>b.classList.add('done')); addCoins(500);
+  const C=['#FFCD75','#A7F070','#73EFF7','#EF7D57','#B13E53'];
+  for(let i=0;i<40;i++){ const d=document.createElement('div'); d.className='cf'; d.style.left=Math.random()*innerWidth+'px'; d.style.top=(-20-Math.random()*120)+'px'; d.style.background=C[i%5]; d.style.animationDelay=(Math.random()*.5)+'s'; document.body.appendChild(d); setTimeout(()=>d.remove(),2400); }
+  const txt = sel===1 ? 'Jugador%202%20se%20une:%20confirmo%20asistencia%20a%20la%20fiesta%20de%20grado%20de%20Laura' : 'No%20podr%C3%A9%20ir%20a%20la%20fiesta%20de%20grado%20de%20Laura';
+  setTimeout(()=>{ if(!window.__demo) location.href='https://wa.me/573000000000?text='+txt; }, 2600);
+});
+</script>
+</body>
+</html>

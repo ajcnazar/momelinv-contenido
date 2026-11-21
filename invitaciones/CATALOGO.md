@@ -9,6 +9,8 @@ Alberto pidió esto porque las primeras cuatro se veían como copias: misma estr
 | novena | Caja de regalo | Tocar caja, la tapa sale volando | Scroll vertical por secciones | 4 cajas | Tarjeta + botón Maps | Botón WhatsApp | Playfair + Jost + Dancing Script | Igual al anterior |
 | cumple-espacial | Cohete | Botón, cuenta 3-2-1 y despega | Scroll vertical por secciones | 4 cajas | Tarjeta + botón Maps | Botón WhatsApp | Fredoka | Igual al anterior |
 | baby-shower | Globo de revelación | Tocar globo, explota en confeti | Scroll vertical por secciones | 4 cajas | Tarjeta + botón Maps | Botón WhatsApp | Baloo 2 + Pacifico | Igual al anterior |
+| periodico-40 | Periódico de cumpleaños (40 años) | Periódico doblado que se desdobla en 3D | Deslizar horizontal, 4 páginas con número de página | Cinta de "ÚLTIMA HORA" que corre abajo + "14 DÍAS" de titular | Aviso clasificado con mapa de tinta y círculo de marcador rojo | Recortar el cupón con tijeras: se desprende y cae, sello "CONFIRMADO" | UnifrakturMaguntia + Old Standard TT + Special Elite + Permanent Marker; papel periódico, tinta negra y rojo | Empieza por el final (recortar cupón) → rebobina a la portada → agenda → clasificados |
+| grado-pixel | Videojuego retro 8 bits (grado universitario) | PRESS START + barra de carga | Historias: tocar para avanzar niveles, barras de progreso arriba y HUD | Barra de experiencia "para desbloquear la fiesta" + reloj DD:HH:MM:SS | Mapa de casillas con personaje que camina hasta la meta 🏁 | "¿Jugador 2 se une?": elegir opción y presionar A en un control | Press Start 2P + VT323; azul noche, amarillo, verde y coral pixel | Toda la invitación en velocidad x2 con distintivo ⏩ |
 
 ## Ya está gastado (no repetir)
 - Estructura "portada → hero centrado → cuenta regresiva → tarjeta de lugar → regalos → confirmar" con scroll vertical.
@@ -26,3 +28,9 @@ Alberto pidió esto porque las primeras cuatro se veían como copias: misma estr
 - **Reel distinto:** enfocar UNA sola función de cerca, POV, antes vs ahora, "3 detalles que nadie nota", velocidad x2 de toda la invitación, comparar dos diseños, empezar por el final.
 
 Al crear una invitación, agrega su fila a la tabla.
+
+
+## Escenas de humor (tools/escenas/)
+No son invitaciones: son escenarios para reels de humor (100 % originales, nombres inventados).
+- `chat-tia/` — chat que se escribe solo (la tía pregunta la dirección 5 veces). API: msg(), day(), typing(), big(), voice().
+- `lista-mama/` — cuaderno con la lista de invitados que crece + panel de confirmaciones. API: line(), note(), dash().

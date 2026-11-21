@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escena: la tía y la dirección</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:Nunito,sans-serif}
+body{background:#EDE3D6;background-image:radial-gradient(rgba(91,70,63,.07) 2px,transparent 2px);background-size:22px 22px}
+.band{height:118px}
+.head{position:absolute;top:118px;left:0;right:0;height:62px;background:#3E5C55;color:#fff;display:flex;align-items:center;gap:10px;padding:0 12px;z-index:3;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.head .back{font-size:22px;opacity:.9}
+.av{width:40px;height:40px;border-radius:50%;background:#F6D7C3;display:flex;align-items:center;justify-content:center;font-size:24px}
+.head b{display:block;font:800 16px Nunito}
+.head small{font:400 12.5px Nunito;opacity:.85}
+#feed{position:absolute;top:180px;left:0;right:0;bottom:56px;overflow:hidden;padding:10px 10px 6px;display:flex;flex-direction:column;justify-content:flex-end;gap:7px}
+.m{max-width:80%;padding:8px 11px 16px;border-radius:12px;font:400 15.5px/1.32 Nunito;color:#222;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.1);animation:in .28s cubic-bezier(.3,1.5,.6,1)}
+.m .t{position:absolute;right:8px;bottom:3px;font:400 10.5px Nunito;color:#888}
+.l{align-self:flex-start;background:#fff;border-top-left-radius:3px}
+.r{align-self:flex-end;background:#D7EFD9;border-top-right-radius:3px}
+.r .t:after{content:" ✓✓";color:#3B8ED0}
+@keyframes in{from{transform:scale(.6) translateY(16px);opacity:0}}
+.day{align-self:center;background:#FFF6E6;color:#6A5A50;font:700 12px Nunito;padding:4px 12px;border-radius:8px;animation:in .25s}
+.cnt{position:absolute;right:-12px;top:-12px;background:#D64545;color:#fff;font:800 12px Nunito;padding:3px 8px;border-radius:12px;transform:rotate(8deg);box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.voice{display:flex;align-items:center;gap:8px;min-width:220px}
+.voice .pl{font-size:20px;color:#3E5C55}
+.voice .wv{flex:1;height:26px;display:flex;align-items:center;gap:2px}
+.voice .wv i{flex:1;background:#9AB3AC;border-radius:2px}
+.pic{width:210px;height:120px;border-radius:8px;background:linear-gradient(#BFE0F2 0 55%,#8CC084 55%);position:relative;margin-bottom:6px;font-size:40px;display:flex;align-items:flex-end;justify-content:center;gap:12px;padding-bottom:12px}
+.card{width:236px;border-radius:10px;overflow:hidden;background:#fff;border:1px solid #CFE3D1;margin-bottom:6px}
+.card .img{height:110px;background:#F8F2EC;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#5B463F;border-bottom:3px solid #C9A36B}
+.card .img i{font:600 italic 34px 'Cormorant Garamond';font-style:italic}
+.card .img small{font:700 10px Nunito;letter-spacing:.25em;color:#C9A36B}
+.card .tx{padding:8px 10px;font:700 13.5px/1.3 Nunito;color:#222}
+.card .tx span{display:block;font:400 12px Nunito;color:#777}
+.card .bt{margin:0 10px 10px;background:#5B463F;color:#fff;border-radius:8px;text-align:center;font:700 13px Nunito;padding:8px}
+.bar{position:absolute;left:0;right:0;bottom:0;height:56px;background:#F4EEE6;display:flex;align-items:center;gap:8px;padding:0 10px}
+.bar .in{flex:1;height:38px;border-radius:20px;background:#fff;color:#999;font:400 14px Nunito;display:flex;align-items:center;padding:0 14px}
+.bar .mic{width:40px;height:40px;border-radius:50%;background:#3E5C55;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px}
+#big{position:absolute;left:0;right:0;top:300px;text-align:center;font:800 64px Nunito;color:#D64545;opacity:0;transform:scale(.3);transition:all .3s cubic-bezier(.3,1.6,.5,1);z-index:9;text-shadow:0 4px 0 #fff}
+#big.on{opacity:1;transform:scale(1)}
+</style>
+</head>
+<body>
+<div class="band"></div>
+<div class="head"><span class="back">←</span><div class="av">👵🏽</div><div><b>Tía Gladys 💐</b><small id="st">en línea</small></div></div>
+<div id="feed"></div>
+<div style="position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:9"><div id="big"></div></div>
+<div class="bar"><div class="in">Mensaje</div><div class="mic">🎤</div></div>
+<script>
+const feed = document.getElementById('feed');
+let hh = 18, mm = 2;
+function time(){ mm += 7; if (mm >= 60){ mm -= 60; hh++; } const h12 = hh > 12 ? hh - 12 : hh; return `${h12}:${String(mm).padStart(2,'0')} p.m.`; }
+function trim(){ while (feed.scrollHeight > feed.clientHeight + 4 && feed.children.length > 1) feed.removeChild(feed.firstChild); }
+window.msg = (side, html, cnt) => {
+  const d = document.createElement('div'); d.className = 'm ' + side;
+  d.innerHTML = html + `<span class="t">${time()}</span>` + (cnt ? `<span class="cnt">Vez Nº ${cnt}</span>` : '');
+  feed.appendChild(d); trim();
+};
+window.day = t => { const d = document.createElement('div'); d.className = 'day'; d.textContent = t; feed.appendChild(d); trim(); };
+window.typing = on => { document.getElementById('st').textContent = on ? 'escribiendo…' : 'en línea'; };
+window.setTime = (h, m) => { hh = h; mm = m; };
+window.big = t => { const b = document.getElementById('big'); if (!t){ b.classList.remove('on'); return; } b.textContent = t; b.classList.add('on'); };
+window.voice = (dur) => `<div class="voice"><span class="pl">▶</span><span class="wv">${Array.from({length:28},(_,i)=>`<i style="height:${6+Math.abs(Math.sin(i*1.7))*18}px"></i>`).join('')}</span><span style="font:400 12px Nunito;color:#777">${dur}</span></div>`;
+</script>
+</body>
+</html>

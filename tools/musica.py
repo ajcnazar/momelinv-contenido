@@ -1,7 +1,7 @@
 """Generador de música original para los reels de Momelinv (100 % sintetizada aquí, libre de derechos).
 
 Uso:  python3 musica.py <estilo> <salida.wav> [segundos] [semilla]
-Estilos: tropical, lofi, dembow, infantil, synthwave, romantico, house, navidad (ver tools/navidad_music.py)
+Estilos: tropical, lofi, dembow, infantil, synthwave, romantico, house, chiptune (8 bits), navidad (ver tools/navidad_music.py)
 La semilla cambia tonalidad, melodía y progresión: misma semilla = misma canción.
 Registra cada pista usada en audio/USO.md para no repetirla.
 """
@@ -146,6 +146,22 @@ def lead(f, d):
     return lp(s, 2600) * env(len(t), .01, .4, .55, .06) * .6
 
 
+def pulse(f, d, duty=.5):
+    t = t_(d); ph = (f * t) % 1.0
+    return np.where(ph < duty, 1.0, -1.0) * env(len(t), .002, d * .8, .4, .02) * .5
+
+
+def tri(f, d):
+    t = t_(d); ph = (f * t) % 1.0
+    return (4 * np.abs(ph - .5) - 1) * env(len(t), .002, d, .6, .02) * .8
+
+
+def nz8(rng, d, snare=False, hat=False):
+    n = int(d * SR); step = 6 if hat else (24 if snare else 70)
+    s = np.repeat(rng.choice([-1.0, 1.0], n // step + 1), step)[:n]
+    return s * env(n, .001, d * (.25 if hat else .5)) * (.35 if hat else .6)
+
+
 # ---------------------------------------------------------------- armonía
 MAJ, MIN = [0, 2, 4, 5, 7, 9, 11], [0, 2, 3, 5, 7, 8, 10]
 PROGS = {
@@ -193,6 +209,7 @@ def compose(style, dur, seed):
         "synthwave": dict(bpm=108, mode="min", roots=(57, 59, 62, 64)),
         "romantico": dict(bpm=72, mode="maj", roots=(60, 62, 64, 65, 67)),
         "house":     dict(bpm=122, mode="min", roots=(57, 60, 62, 65)),
+        "chiptune":  dict(bpm=138, mode="maj", roots=(60, 62, 64, 67)),
     }[style]
     beat = 60 / cfg["bpm"]; bar = 4 * beat
     root = int(rng.choice(cfg["roots"]))
@@ -275,9 +292,22 @@ def compose(style, dur, seed):
                     M.add(kick(), t0 + k * beat, .4); M.add(hat(rng, True), t0 + k * beat + beat / 2, .5, .25)
                 M.add(clap(rng), t0 + beat, .45); M.add(clap(rng), t0 + 3 * beat, .45)
 
+        if style == "chiptune":  # 8 bits: bajo triangular, arpegio de pulso, ruido como batería
+            for k in range(8):
+                M.add(tri(hz(ch[0] - 24 + (12 if k % 2 else 0)), beat * .45), t0 + k * beat / 2, .5)
+            arp = [ch[0] + 12, ch[1] + 12, ch[2] + 12, ch[1] + 24]
+            for k in range(16):
+                M.add(pulse(hz(arp[k % 4]), beat / 4 * .9, .25), t0 + k * beat / 4, .1, .25 if k % 2 else -.25)
+            if drums:
+                for k in range(4):
+                    M.add(nz8(rng, .09 if k % 2 == 0 else .14, k % 2 == 1), t0 + k * beat, .5)
+                for k in range(8):
+                    M.add(nz8(rng, .03, False, True), t0 + k * beat / 2 + beat / 4, .25)
+
     # melodía principal (entra en el compás 2)
     voice = {"tropical": marimba, "lofi": lambda f, d: pluck(f, d * 1.5, .3, rng), "dembow": lambda f, d: pluck(f, d, .8, rng),
-             "infantil": bell, "synthwave": lead, "romantico": epiano, "house": lambda f, d: pluck(f, d, .85, rng)}[style]
+             "infantil": bell, "synthwave": lead, "romantico": epiano, "house": lambda f, d: pluck(f, d, .85, rng),
+             "chiptune": lambda f, d: pulse(f, d, .5)}[style]
     for pos, m, d in mel:
         if pos >= 4 * intro:
             M.add(voice(hz(m), d * beat * 1.1), pos * beat, .3 if style != "infantil" else .18, .1)

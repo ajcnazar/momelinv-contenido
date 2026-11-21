@@ -37,6 +37,15 @@ p strong{font-weight:500}
 .list{list-style:none;margin-top:10px}
 .list li{font:300 38px/1.4 Jost;padding:18px 0 18px 64px;position:relative;border-bottom:1px solid rgba(201,163,107,.35)}
 .list li:before{content:"✦";position:absolute;left:8px;top:18px;color:#C9A36B}
+.bars{margin-top:10px}
+.bars .b{margin:0 0 22px}
+.bars .b div{display:flex;justify-content:space-between;font:400 32px Jost;margin-bottom:8px}
+.bars .b div b{font:600 34px Jost;color:#C9A36B}
+.bars .b i{display:block;height:20px;border-radius:10px;background:#D4B0A0}
+.emo{width:190px;height:190px;border-radius:50%;background:#fff;border:3px solid #E8D6C4;display:flex;align-items:center;justify-content:center;font-size:110px;box-shadow:0 18px 40px rgba(91,70,63,.1);margin-bottom:30px;position:relative}
+.emo span{position:absolute;right:-14px;top:-10px;width:70px;height:70px;border-radius:50%;background:#5B463F;color:#F8F2EC;font:600 40px/70px 'Cormorant Garamond';text-align:center}
+.sol{margin-top:40px;background:#fff;border-left:8px solid #C9A36B;border-radius:18px;padding:24px 28px;font:300 32px/1.4 Jost}
+.sol b{display:block;font:600 22px Jost;letter-spacing:.22em;color:#C9A36B;margin-bottom:6px}
 """
 
 
@@ -110,6 +119,63 @@ CARRUSELES = {
         CLOSE,
     ],
 }
+
+
+CLOSE2 = CLOSE.replace("para bodas, XV años y cumpleaños", "para bodas, cumpleaños, grados y más")
+
+
+def close_q(q):
+    return CLOSE2.replace('<div class=kick>¿Te sirvió? Guárdalo 📌</div>', f'<div class=kick>{q}</div>')
+
+
+def bars(rows):
+    h = "".join(f'<div class=b><div><span>{n}</span><b>{v} %</b></div><i style="width:{v*2}%"></i></div>' for n, v in rows)
+    return f'<div class=bars>{h}</div>'
+
+
+def tipo(n, emoji, name, txt, sol):
+    return f"""<div class=emo>{emoji}<span>{n}</span></div><h2>{name}</h2><p>{txt}</p>
+<div class=sol><b>SOLUCIÓN</b>{sol}</div>"""
+
+
+CARRUSELES.update({
+    "presupuesto": [
+        """<div class=kick>Bodas · Cumpleaños · Grados</div><h1>¿En qué se va<br><em>la plata</em><br>de tu fiesta?</h1>
+<p class=sub>La repartición que usan los organizadores,<br>en porcentajes 💸</p><div><span class=pill>Guárdalo 📌</span></div>""",
+        """<div class=kick>Así se reparte (aprox.)</div><h2>Tu presupuesto<br>en <em>7 partes</em></h2>""" + bars([
+            ("Comida y bebida", 40), ("Lugar", 15), ("Música y animación", 10), ("Fotos y video", 10),
+            ("Decoración", 10), ("Imprevistos", 10), ("Invitaciones y detalles", 5)]),
+        step("La parte más grande", "Comida y bebida: <em>40 %</em>", "Es lo que más recuerdan tus invitados. Cotiza <strong>por persona</strong> y multiplica por los que confirmaron, no por los que invitaste.", "Tip"),
+        step("Nadie lo planea", "Guarda el <em>10 %</em> para imprevistos", "Siempre aparece algo: hielo extra, transporte, una hora más de música o la mesa que faltó. Si no lo usas, ¡mejor!"),
+        """<div class=kick>Sin que se note</div><h2>3 formas de <em>ahorrar</em></h2><div class=rule></div>
+<ul class=list><li>Haz la fiesta un viernes o domingo: los lugares suelen cobrar menos</li><li>Menos invitados, mejor atendidos</li><li>Invitación digital: cero impresión y cero mensajería</li></ul>""",
+        step("El truco de los que saben", "Presupuesta con <em>confirmados reales</em>", "Cada plato de más es plata perdida. Con confirmación por invitado sabes exactamente cuántos van antes de pagar el catering."),
+        close_q("¿Te sirvió? Guárdalo 📌"),
+    ],
+    "tipos-invitados": [
+        """<div class=kick>Todos tenemos uno 😂</div><h1>Los 5 invitados<br>que <em>nunca faltan</em><br>en una fiesta</h1>
+<p class=sub>¿Cuál tienes en tu familia?<br>Etiquétalo sin miedo 👇</p><div><span class=pill>Desliza →</span></div>""",
+        tipo("1", "🙋", "El <em>“¿puedo llevar<br>a alguien?”</em>", "Confirmó 1 y llega con 3. Uno es “un amigo que está de visita”.", "Escribe los cupos por invitación: “Familia Ríos · 2 cupos”."),
+        tipo("2", "👻", "El <em>fantasma</em>", "Nunca respondió el mensaje… pero aparece en la foto de grupo.", "Fecha límite y un botón para confirmar con un toque."),
+        tipo("3", "⏰", "El que llega<br><em>antes que el DJ</em>", "Te encuentra en chanclas inflando globos. Termina ayudando con las mesas.", "Pon el itinerario con horarios claros en la invitación."),
+        tipo("4", "🍱", "El del <em>táper</em>", "Se lleva medio ponqué “para los de la casa” y un plato de arroz para mañana.", "Ninguna. Este es patrimonio de la familia 😂"),
+        tipo("5", "💨", "El que confirma<br><em>y no llega</em>", "Dijo “fijo voy”. Su plato y su silla lo siguen esperando.", "Un recordatorio una semana antes, con el mismo link."),
+        close_q("¿Cuál eres tú? 1, 2, 3, 4 o 5 👇"),
+    ],
+    "ninos-si-o-no": [
+        """<div class=kick>Etiqueta para anfitriones</div><h1>¿Niños<br><em>sí o no</em><br>en tu fiesta?</h1>
+<p class=sub>Cómo decirlo en la invitación<br>sin que nadie se ofenda</p><div><span class=pill>Guárdalo 📌</span></div>""",
+        """<div class=kick>Paso 1</div><h2>Decide primero,<br><em>comunica después</em></h2><div class=rule></div>
+<ul class=list><li>Fiesta familiar: todos invitados</li><li>Solo adultos</li><li>Solo los niños de la familia cercana</li></ul>
+<p style="margin-top:34px;font-size:34px">Elige una y aplícala igual para todos: <strong>las excepciones son las que ofenden.</strong></p>""",
+        frase("Si es solo para adultos", "Queremos que esta noche también sea para que ustedes la disfruten: la celebración será solo para adultos. ¡Gracias por entender! 💛"),
+        frase("Si los niños sí van", "¡Los más pequeños también están invitados! Habrá un espacio con actividades para que ellos se diviertan 🎈"),
+        step("Paso 2", "Escribe <em>los nombres</em>", "La invitación dice a quién se invita: <strong>“Carlos y Ana”</strong> o <strong>“Familia Gómez · 4 cupos”</strong>. Así nadie asume que van todos.", "Clave"),
+        """<div class=kick>Si alguien pregunta…</div><h2>Responde <em>con cariño</em></h2><div class=rule></div>
+<ul class=list><li>Sin dar mil explicaciones</li><li>Ofrece algo: “te guardo ponqué para los niños”</li><li>No hagas excepciones de última hora</li></ul>""",
+        close_q("¿Niños sí o no? Te leemos 👇"),
+    ],
+})
 
 
 def render(name, outdir):
