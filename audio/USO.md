@@ -22,5 +22,7 @@ Juegos de efectos de mix.py: magia, burbujas, despegue, suave, retro, papel. Nav
 | 2026-11-25-periodico-40 | musica.py lofi semilla 25 | suave |
 | 2026-11-26-pov-lista-mama | musica.py dembow semilla 26 | papel (nuevo: lápiz + sello) |
 | 2026-11-28-grado-videojuego | musica.py chiptune semilla 28 (estilo nuevo) | retro (nuevo: blips 8 bits) |
+| 2026-11-30-boda-playa-pov (reemplaza 2026-11-19, que Instagram no distribuyó) | musica.py romantico semilla 30 | despegue |
+| 2026-12-02-novena-cada-noche (reemplaza 2026-11-20, que Instagram no distribuyó) | musica.py infantil semilla 31 | suave |
 
 Ya muy usadas (evitar por ahora): vals.mp3, pop.mp3, juego de efectos "magia".
